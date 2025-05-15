@@ -1,0 +1,83 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Panel de Administración - Slides{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Administración de Slides</h1>
+
+<div class="d-flex justify-content-end mb-3">
+    <a href="/admin/slides/new" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nuevo Slide
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <h5 class="card-title mb-0">Lista de Slides</h5>
+    </div>
+    <div class="card-body">
+        {% if slides %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>URL</th>
+                        <th>Duración (seg)</th>
+                        <th>Estado</th>
+                        <th>Expiración</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for slide in slides %}
+                    <tr>
+                        <td>{{ slide.id }}</td>
+                        <td>{{ slide.title }}</td>
+                        <td>
+                            <a href="{{ slide.url }}" target="_blank" class="text-truncate d-inline-block" style="max-width: 200px;">
+                                {{ slide.url }}
+                            </a>
+                        </td>
+                        <td>{{ slide.duration }}</td>
+                        <td>
+                            {% if slide.is_active %}
+                                {% if slide.is_expired %}
+                                <span class="badge bg-warning">Expirado</span>
+                                {% else %}
+                                <span class="badge bg-success">Activo</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if slide.expiry_date %}
+                                {{ slide.expiry_date.strftime('%d/%m/%Y') }}
+                            {% else %}
+                                <span class="text-muted">Sin expiración</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="/admin/slides/{{ slide.id }}/edit" class="btn btn-primary">
+                                    Editar
+                                </a>
+                                <a href="/admin/slides/{{ slide.id }}/delete" class="btn btn-danger" 
+                                    onclick="return confirm('¿Está seguro que desea eliminar este slide?')">
+                                    Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">No hay slides registrados. Cree un nuevo slide para comenzar.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

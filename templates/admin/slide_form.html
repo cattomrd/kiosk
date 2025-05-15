@@ -1,0 +1,74 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+    {% if slide %}Editar Slide{% else %}Nuevo Slide{% endif %} - Administración
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    {% if slide %}Editar Slide{% else %}Nuevo Slide{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Título*</label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               value="{{ slide.title if slide else '' }}" required>
+                        <div class="form-text">Nombre descriptivo para identificar el slide.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="url" class="form-label">URL*</label>
+                        <div class="input-group">
+                            <input type="url" class="form-control" id="url" name="url" 
+                                   value="{{ slide.url if slide else '' }}" required>
+                            <button type="button" class="btn btn-outline-primary" id="check-url-btn">Verificar</button>
+                        </div>
+                        <div class="form-text">URL completa que se mostrará en el slide.</div>
+                        <div id="url-result" class="mt-2" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="description" name="description" rows="3">{{ slide.description if slide else '' }}</textarea>
+                        <div class="form-text">Descripción opcional del slide.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Duración (segundos)*</label>
+                        <input type="number" class="form-control" id="duration" name="duration" 
+                               value="{{ slide.duration if slide else '60' }}" min="5" max="3600" required>
+                        <div class="form-text">Tiempo en segundos que se mostrará el slide.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="expiry_days" class="form-label">Caducidad (días)</label>
+                        <input type="number" class="form-control" id="expiry_days" name="expiry_days" 
+                            value="{{ expiry_days if expiry_days is not none else '' }}" min="1">
+                        <div class="form-text">Número de días hasta que expire el slide. Dejar en blanco para que no expire.</div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" 
+                            {% if slide is not defined or slide.is_active %}checked{% endif %} value="true">
+                        <label class="form-check-label" for="is_active">Slide activo</label>
+                        <div class="form-text">Desmarcar para desactivar temporalmente el slide sin eliminarlo.</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="/admin" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            {% if slide %}Actualizar{% else %}Crear{% endif %} Slide
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
