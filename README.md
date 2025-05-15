@@ -13,7 +13,7 @@ Dependencias (ver requirements.txt)
 Instalación
 Clonar el repositorio:
 bash
-git clone https://github.com/tuusuario/url-slider.git
+git clone https://github.com/cattomrd/kiosk.git
 cd url-slider
 Crear y activar un entorno virtual:
 bash
